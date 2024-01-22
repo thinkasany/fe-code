@@ -5,22 +5,22 @@ const path = require("path");
 const config = {
   entry: {
     index: {
-      import: "./src/index.js"
-      //   dependOn: ["react-vendor", "test"]
+      import: "./src/index.js",
+      dependOn: ["react-vendor", "test"]
+    },
+    "react-vendor": {
+      import: ["react"]
+      //   import: ["react", "redux"]
+    },
+    test: {
+      import: "./src/test.js",
+      filename: "app.js"
     }
-    // "react-vendor": {
-    //   import: ["react"]
-    //   //   import: ["react", "redux"]
-    // },
-    // test: {
-    //   import: "./src/test.js",
-    //   filename: "app.js"
-    // }
   },
   output: {
     path: path.resolve(__dirname, "build"),
     // publicPath: "https://a.b.c/assets/"
-    filename: "test_demo.js",
+    // filename: "test_demo.js",
     chunkFilename: "asset_[id].js"
   },
   module: {
@@ -29,6 +29,10 @@ const config = {
         test: /\.css$/,
         use: ["style-loader", "css-loader"] // MiniCssExtractPlugin是将css抽出文件的，会和style-loader冲突
         // use: [MiniCssExtractPlugin.loader, "css-loader"]
+      },
+      {
+        test: /\.txt$/,
+        use: "raw-loader"
       }
     ]
   },
@@ -57,9 +61,9 @@ const config = {
 module.exports = (env, argv) => {
   console.log(env, argv);
   if (argv.mode === "development") {
-    config.output.filename = "dev_demo.js";
+    // config.output.filename = "dev_demo.js";
   } else if (argv.mode === "production") {
-    config.output.filename = "prod_demo.js";
+    // config.output.filename = "prod_demo.js";
   }
   return config;
 };
