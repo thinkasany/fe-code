@@ -1,6 +1,6 @@
 import React from "react";
 import "./index.css";
-import "../assets/text.txt";
+// import "../assets/text.txt";
 import("./log").then(log => {
   console.log(999);
 });

@@ -1,6 +1,7 @@
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const CssMinizerPlugin = require("css-minimizer-webpack-plugin");
+
 const path = require("path");
 const config = {
   entry: {
@@ -23,12 +24,34 @@ const config = {
     filename: "test_demo.js",
     chunkFilename: "asset_[id].js"
   },
+  resolveLoader: {
+    alias: {
+      loader1: path.resolve(__dirname, "./loader/loader1")
+    }
+  },
   module: {
+    // rules: [
+    //   {
+    //     test: /\.css$/,
+    //     // use: ["style-loader", "css-loader"] // MiniCssExtractPlugin是将css抽出文件的，会和style-loader冲突
+    //     use: [MiniCssExtractPlugin.loader, "css-loader"]
+    //   }
+    // ]
+    // 自定义loader
     rules: [
       {
         test: /\.css$/,
-        use: ["style-loader", "css-loader"] // MiniCssExtractPlugin是将css抽出文件的，会和style-loader冲突
-        // use: [MiniCssExtractPlugin.loader, "css-loader"]
+        use: [
+          {
+            loader: "loader1",
+            options: {
+              attributes: {
+                name: "loader1"
+              }
+            }
+          },
+          "css-loader"
+        ]
       }
     ]
   },
