@@ -1,6 +1,7 @@
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const CssMinizerPlugin = require("css-minimizer-webpack-plugin");
+const { CSPPlugin } = require("./plugin/test-plugin");
 
 const path = require("path");
 const config = {
@@ -30,42 +31,38 @@ const config = {
     }
   },
   module: {
-    // rules: [
-    //   {
-    //     test: /\.css$/,
-    //     // use: ["style-loader", "css-loader"] // MiniCssExtractPlugin是将css抽出文件的，会和style-loader冲突
-    //     use: [MiniCssExtractPlugin.loader, "css-loader"]
-    //   }
-    // ]
-    // 自定义loader
     rules: [
       {
         test: /\.css$/,
-        use: [
-          {
-            loader: "loader1",
-            options: {
-              attributes: {
-                name: "loader1"
-              }
-            }
-          },
-          "css-loader"
-        ]
+        use: ["style-loader", "css-loader"] // MiniCssExtractPlugin是将css抽出文件的，会和style-loader冲突
+        // use: [MiniCssExtractPlugin.loader, "css-loader"]
       }
     ]
+    // 自定义loader
+    // rules: [
+    //   {
+    //     test: /\.css$/,
+    //     use: [
+    //       {
+    //         loader: "loader1",
+    //         options: {
+    //           attributes: {
+    //             name: "loader1"
+    //           }
+    //         }
+    //       },
+    //       "css-loader"
+    //     ]
+    //   }
+    // ]
   },
   optimization: {
-    minimizer: [new CssMinizerPlugin()]
+    // minimizer: [new CssMinizerPlugin()]
   },
   plugins: [
-    new HtmlWebpackPlugin({
-      template: path.resolve(__dirname, "./src/index.html")
+    new CSPPlugin({
+      "default-src": ["self", "www.a.com"]
     })
-    // new MiniCssExtractPlugin({
-    //   filename: "[name].css",
-    //   chunkFilename: "[name].css"
-    // })
   ],
   devtool: "source-map",
   devServer: {
