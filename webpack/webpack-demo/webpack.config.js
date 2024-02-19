@@ -34,8 +34,17 @@ const config = {
     rules: [
       {
         test: /\.css$/,
-        use: ["style-loader", "css-loader"] // MiniCssExtractPlugin是将css抽出文件的，会和style-loader冲突
-        // use: [MiniCssExtractPlugin.loader, "css-loader"]
+        // use: ["style-loader", "css-loader"] // MiniCssExtractPlugin是将css抽出文件的，会和style-loader冲突
+        use: [MiniCssExtractPlugin.loader, "css-loader", {
+          loader: 'postcss-loader',
+          options: {
+            postcssOptions: {
+              plugins: [
+                ['autoprefixer']
+              ]
+            }
+          }
+        }]
       }
     ]
     // 自定义loader
@@ -60,6 +69,7 @@ const config = {
     // minimizer: [new CssMinizerPlugin()]
   },
   plugins: [
+    new MiniCssExtractPlugin(),
     new CSPPlugin({
       "default-src": ["self", "www.a.com"]
     })
